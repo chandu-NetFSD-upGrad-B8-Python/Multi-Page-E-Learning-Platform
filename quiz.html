@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Quizzes</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <h4 class="logo">c2f</h4>
+  <a href="index.html"><i class="fa fa-home"></i></a>
+  <a href="courses.html"><i class="fa fa-book"></i></a>
+  <a href="quiz.html"><i class="fa fa-check"></i></a>
+  <a href="profile.html"><i class="fa fa-user"></i></a>
+</div>
+
+<!-- NAVBAR -->
+<nav class="topbar">
+  <span>Quizzes</span>
+  <span id="navUser"></span>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+
+<header><nav class="breadcrumb">
+  <a href="index.html">Home</a> /
+  <span>Quiz</span>
+</nav></header>
+
+<div class="grid-3" id="quizCourses"></div>
+
+</div>
+
+<footer class="text-center p-2">
+  © 2026 E-Learning Platform
+</footer>
+
+<!-- DATA FILE -->
+<script src="js/data.js"></script>
+
+<script>
+
+/* LOAD USER */
+let user = JSON.parse(localStorage.getItem("user")) || {};
+document.getElementById("navUser").innerText = user.name || "Guest";
+
+/* INIT QUIZ TRACK */
+if(!user.completedQuizzes) user.completedQuizzes = [];
+
+/* LOAD QUIZZES */
+courses.forEach(c=>{
+
+let completed = user.completedQuizzes.includes(c.title);
+
+document.getElementById("quizCourses").innerHTML += `
+<div class="card course-card">
+
+<img src="${c.img}">
+
+<h5>${c.title} Quiz</h5>
+
+<p class="text-muted">Test your knowledge in ${c.title}</p>
+
+<a href="quiz-player.html?course=${encodeURIComponent(c.title)}"
+   class="btn ${completed ? 'btn-success' : 'btn-primary'} btn-sm">
+
+${completed ? 'Completed' : 'Start Quiz'}
+
+</a>
+
+</div>
+`;
+});
+
+</script>
+
+</body>
+</html>
