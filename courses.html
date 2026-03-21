@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Courses</title>
+
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <h4 class="logo">c2f</h4>
+  <a href="index.html"><i class="fa fa-home"></i></a>
+  <a href="courses.html"><i class="fa fa-book"></i></a>
+  <a href="quiz.html"><i class="fa fa-check"></i></a>
+  <a href="profile.html"><i class="fa fa-user"></i></a>
+</div>
+
+<!-- TOP NAVBAR -->
+<nav class="navbar navbar-light bg-white shadow-sm topbar">
+  <div class="container-fluid">
+    <span class="navbar-brand mb-0 h5">E-Learning Courses</span>
+    <span class="fw-bold" id="navUser"></span>
+  </div>
+</nav>
+
+<div class="main">
+
+<header><nav class="breadcrumb">
+  <a href="index.html">Home</a> /
+  <span>Courses</span>
+</nav></header>
+
+<div class="grid-3" id="courses"></div>
+
+</div>
+
+<h5 class="mt-4">Course Overview</h5>
+
+<table class="table table-bordered">
+<tr>
+  <th>Course</th>
+  <th>Status</th>
+</tr>
+
+<tr>
+  <td>HTML</td>
+  <td>Available</td>
+</tr>
+
+<tr>
+  <td>Java</td>
+  <td>Available</td>
+</tr>
+</table>
+
+<footer class="text-center p-2">
+  © 2026 E-Learning Platform
+</footer>
+
+<script src="js/data.js"></script>
+
+<script>
+
+/* LOAD USER */
+let user = JSON.parse(localStorage.getItem("user")) || {};
+document.getElementById("navUser").innerText = user.name || "Guest";
+
+/* INIT ARRAYS */
+if(!user.completedCourses) user.completedCourses = [];
+if(!user.points) user.points = 0;
+
+/* RENDER COURSES */
+courses.forEach(c=>{
+
+let completed = user.completedCourses.includes(c.title);
+
+document.getElementById("courses").innerHTML += `
+<div class="card course-card">
+
+<img src="${c.img}">
+
+<h5>${c.title}</h5>
+
+<p>${c.desc}</p>
+
+<a href="course-detail.html?id=${c.id}"
+class="btn ${completed ? 'btn-success' : 'btn-primary'} btn-sm">
+
+${completed ? 'Completed' : 'Start Learning'}
+
+</a>
+
+</div>
+`;
+});
+
+/* START COURSE */
+function startCourse(courseName){
+
+if(!user.completedCourses.includes(courseName)){
+  user.completedCourses.push(courseName);
+  user.points += 10;
+
+  localStorage.setItem("user", JSON.stringify(user));
+  alert("Course Completed! +10 points");
+  location.reload();
+}else{
+  alert("Already completed!");
+}
+
+}
+
+</script>
+
+</body>
+</html>
