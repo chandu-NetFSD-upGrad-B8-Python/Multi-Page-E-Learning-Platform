@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Profile</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <h4 class="logo">c2f</h4>
+  <a href="index.html"><i class="fa fa-home"></i></a>
+  <a href="courses.html"><i class="fa fa-book"></i></a>
+  <a href="quiz.html"><i class="fa fa-check"></i></a>
+  <a href="profile.html"><i class="fa fa-user"></i></a>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-light bg-white shadow-sm topbar">
+  <div class="container-fluid">
+    <span class="navbar-brand">Profile</span>
+    <span id="navName"></span>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+
+<header>
+  <nav class="breadcrumb">
+    <a href="index.html">Home</a> /
+    <span>Profile</span>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="profile-hero">
+  <h3>Welcome 👋</h3>
+  <p>Manage your learning profile, track progress, and view achievements.</p>
+</div>
+
+<div class="row">
+
+<!-- LEFT SIDE (FORM) -->
+<div class="col-md-5">
+
+  <!-- STATS CARD -->
+  <div class="card p-4 mb-3 text-white" style="
+    background: linear-gradient(135deg, #ff7e5f, #feb47b);
+  ">
+    <h5>📊 Your Learning Stats</h5>
+    <p>Total Points: <b id="leftPoints">0</b></p>
+    <p>Courses Completed: <b id="leftCourses">0</b></p>
+    <p>Quizzes Completed: <b id="leftQuizzes">0</b></p>
+  </div>
+
+  <!-- MOTIVATION CARD -->
+  <div class="card p-4 mb-3 text-white" style="
+    background: linear-gradient(135deg, #43cea2, #c1cfdc);
+  ">
+    <h5>🔥 Stay Motivated</h5>
+    <p>Learn something new every day 🚀</p>
+    <p>Small steps → Big success 💯</p>
+  </div>
+
+  <!-- TIP CARD -->
+  <div class="card p-4 text-white" style="
+    background: linear-gradient(135deg, #fd30e5, #c9bdd5);
+  ">
+    <h5>💡 Pro Tip</h5>
+    <p>Complete courses + quizzes to boost your score!</p>
+  </div>
+
+</div>
+
+<!-- RIGHT SIDE (PROFILE) -->
+<div class="col-md-7">
+
+  <!-- LOGIN FORM -->
+  <section class="card p-4 mb-3" id="formCard">
+    <h4>👤 Enter Your Details</h4>
+
+   <input type="text" id="name" class="form-control mb-2" placeholder="Enter Name">
+<input type="email" id="email" class="form-control mb-2" placeholder="Enter Email">
+<input type="text" id="college" class="form-control mb-2" placeholder="Enter College Name">
+<input type="text" id="degree" class="form-control mb-2" placeholder="Enter Degree">
+<input type="number" id="marks" class="form-control mb-2" placeholder="Enter Percentage">
+<input type="file" id="resume" class="form-control mb-2">
+
+<label class="mb-1">Are you willing to relocate?</label><br>
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="radio" name="relocate" value="Yes">
+  <label class="form-check-label">Yes</label>
+</div>
+
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="radio" name="relocate" value="No">
+  <label class="form-check-label">No</label>
+</div>
+
+    <button class="btn btn-primary w-100" onclick="saveUser()">Save</button>
+  </section>
+
+  <!-- PROFILE -->
+  <div class="card p-4 d-none" id="profileCard">
+
+    <h4>📊 My Profile</h4>
+
+    <p><b>Name:</b> <span id="pName"></span></p>
+    <p><b>Email:</b> <span id="pEmail"></span></p>
+
+    <hr>
+
+    <p><b>Completed Courses:</b> <span id="done"></span></p>
+    <p><b>Total Points:</b> <span id="score"></span></p>
+
+    <hr>
+
+    <h5>🏆 Achievements</h5>
+    <ul>
+      <li>✔ Active Learner</li>
+      <li>✔ Quiz Participant</li>
+      <li>✔ Course Explorer</li>
+    </ul>
+
+    <button class="btn btn-danger w-100 mt-3" onclick="logout()">Logout</button>
+
+  </div>
+
+</div>
+
+</div>
+
+<footer class="text-center p-2 mt-3">
+  © 2026 E-Learning Platform
+</footer>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+</div>
+
+<script>
+function saveUser(){
+const name = document.getElementById("name").value;
+const email = document.getElementById("email").value;
+
+if(!name || !email){
+alert("Fill all fields");
+return;
+}
+
+/* PRESERVE EXISTING DATA */
+let existing = JSON.parse(localStorage.getItem("user")) || {};
+
+let user = {
+  ...existing,
+  name,
+  email
+};
+
+localStorage.setItem("user", JSON.stringify(user));
+loadProfile();
+}
+
+function loadProfile(){
+const user = JSON.parse(localStorage.getItem("user"));
+
+if(user && user.name && user.email){
+
+  document.getElementById("formCard").classList.add("d-none");
+  document.getElementById("profileCard").classList.remove("d-none");
+
+  document.getElementById("pName").innerText = user.name;
+  document.getElementById("pEmail").innerText = user.email;
+  document.getElementById("navName").innerText = user.name;
+
+  document.getElementById("done").innerText =
+  (user.completedCourses || []).length;
+
+  document.getElementById("score").innerText =
+  user.points || 0;
+
+  document.getElementById("leftPoints").innerText = user?.points || 0;
+document.getElementById("leftCourses").innerText =
+(user?.completedCourses || []).length;
+document.getElementById("leftQuizzes").innerText =
+(user?.completedQuizzes || []).length;
+}
+}
+
+function logout(){
+localStorage.clear();
+location.reload();
+}
+
+loadProfile();
+</script>
+</body>
+</html>
